@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+     <meta charset="UTF-8">
+     <meta http-equiv="X-UA-Compatible" content="IE=edge">
+     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+     <title>Currency Calculator</title>
+</head>
+
+<body>
+
+     <style>
+          html,
+          body {
+
+               text-align: center;
+               flex: 1;
+               justify-content: center;
+               align-items: center;
+               font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+               background-color: aqua;
+          }
+
+          #from {
+
+               position: relative;
+               top: -40px;
+               right: -20px;
+
+
+          }
+
+          #to {
+
+               position: relative;
+               top: -50px;
+               right: -66px;
+
+          }
+
+          #amount {
+
+               margin-left: -70px;
+               position: absolute;
+
+          }
+
+          #convert-btn {
+
+               position: relative;
+               top: 40px;
+               left: -50px;
+               width: 130px;
+               height: 40px;
+               border-radius: 40%;
+               background-color: red;
+               border: 0px solid black;
+
+          }
+
+          #ff {
+
+               position: relative;
+               top: 40px;
+               left: -20px;
+               display: none;
+
+
+          }
+     </style>
+
+     <h1>Currency Calculator </h1>
+
+     <h2 style="margin-left: -180px; margin-top: 10px;"> Convert From: </h2>
+     <select id="from">
+
+          <option value="USD">USD</option>
+          <option value="EUR">EUR</option>
+          <option value="GBP">GBP</option>
+          <option value="MXN">MXN</option>
+
+     </select>
+
+
+     <h2 style="margin-left: -190px; margin-top: 10px;"> Convert To: </h2>
+     <select id="to">
+
+          <option value="USD">USD</option>
+          <option selected value="EUR">EUR</option>
+          <option value="GBP">GBP</option>
+          <option value="MXN">MXN</option>
+
+     </select>
+
+     <input type="number" maxlength="40" placeholder="Amount" value="0" id="amount" />
+
+     <button id="convert-btn"> Convert! </button>
+
+     <div id="ff">
+          <h1>Total:</h1>
+          <h2 id="lk">{total}</h2>
+     </div>
+     <script>
+
+
+          document.getElementById("convert-btn").onclick = () => {
+               fetch(`./api/convert?to=${document.getElementById('from').value}&from=${document.getElementById('to').value}&amount=${document.getElementById('amount').value}`)
+                    .then(response => response.json())
+                    .then(data => {
+                         document.getElementById("ff").style.display = "block";
+                         document.getElementById("lk").innerHTML = data.total.toFixed(2);
+                    })
+                    .catch((error) => {
+                         alert('Error:' + error);
+                    });
+          }
+     </script>
+
+</body>
+
+</html>
