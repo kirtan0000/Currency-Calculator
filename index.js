@@ -6,7 +6,7 @@ app.use(bodyParser.json());
 const port = 3000
 
 app.get('/', (req, res) => {
-    res.sendFile(__dirname + "/html/index.html")
+    res.sendfile('./html/index.html');
 })
 
 app.get('/api/convert/', (req, res) => {
