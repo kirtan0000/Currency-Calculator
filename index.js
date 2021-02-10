@@ -13,81 +13,21 @@ app.get('/api/convert/', (req, res) => {
 
     if(req.query.from && req.query.to && req.query.amount) {
 
-        const from = req.query.from.toUpperCase();
-        const to = req.query.to.toUpperCase();
+        const from = req.query.from.toUpperCase().toString();
+        const to = req.query.to.toUpperCase().toString();
         const amount = Number(req.query.amount);
-        let total = 0;
 
-        // USD
-
-        if(from == "USD" && to == "EUR") {
-
-            res.json({ total: amount * 1.21 });
-            
-        } 
-        else if (from == "USD" && to == "GBP") {
-
-            res.json({ total: amount * 0.72 });
-            
-        }
-        else if (from == "USD" && to == "MXN") {
-
-            res.json({ total: amount * 20.10 });
-            
-        }
-        // EUR
-        else if(from == "EUR" && to == "USD") {
-
-            res.json({ total: amount * 0.83 });
-            
-        } else if(from == "EUR" && to == "GBP") {
-
-            res.json({ total: amount * 0.88 });
-            
-        }
-        else if (from == "EUR" && to == "MXN") {
-
-            res.json({ total: amount * 24.36 });
-            
-        }
-        // GBP
-        else if(from == "GBP" && to == "USD") {
-
-            res.json({ total: amount * 1.38 });
-            
-        } else if(from == "GBP" && to == "EUR") {
-
-            res.json({ total: amount * 1.14 });
-            
-        }
-        else if (from == "GBP" && to == "MXN") {
-
-            res.json({ total: amount * 27.77 });
-            
-        }
-        // MXN
-        else if(from == "MXN" && to == "USD") {
-
-            res.json({ total: amount * 0.05 });
-            
-        } else if(from == "MXN" && to == "EUR") {
-
-            res.json({ total: amount * 0.041 });
-            
-        }
-        else if (from == "MXN" && to == "GBP") {
-
-            res.json({ total: amount * 0.036 });
-            
-        } else if(from == to) {
-
-            res.json({ total: amount });
-
-
+        const EXCHANGE_RATES =
+        {
+            USD: { EUR: 1.21, GBP: 0.72, MXN: 20.10},
+            EUR: { USD: 0.83, GBP: 0.88, MXN: 25.36 },
+            GBP: { USD: 1.38, EUR: 1.14, MXN: 27.77 },
+            MXN: { USD: 0.05, EUR: 0.041, GBP: 0.036 }
         }
 
+        const total = EXCHANGE_RATES[from][to] * amount;
 
-        res.json({ amount: amount });
+        res.json({ total: newValue });
 
     } else {
 
