@@ -147,28 +147,19 @@
                fetch(`./api/convert?to=${document.getElementById('from').value}&from=${document.getElementById('to').value}&amount=${document.getElementById('amount').value}`)
                     .then(response => response.json())
                     .then(data => {
-                         try {
 
-                              document.getElementById("totalHead").innerText = `${document.getElementById("amount").value} ${Number(document.getElementById("amount").value) == 1 ? $("#from option:selected").text().match(/\(([^)]+)\)/)[1].slice(0, -1) : $("#from option:selected").text().match(/\(([^)]+)\)/)[1]} = ${data.total.toFixed(2)} ${data.total == 1 ? $("#to option:selected").text().match(/\(([^)]+)\)/)[1].slice(0, -1) : $("#to option:selected").text().match(/\(([^)]+)\)/)[1]}`;
-                              document.getElementById("selects").style.display = "block";
+                         document.getElementById("totalHead").innerText = `${document.getElementById("amount").value} ${Number(document.getElementById("amount").value) == 1 ? $("#from option:selected").text().match(/\(([^)]+)\)/)[1].slice(0, -1) : $("#from option:selected").text().match(/\(([^)]+)\)/)[1]} = ${data.total.toFixed(2)} ${data.total == 1 ? $("#to option:selected").text().match(/\(([^)]+)\)/)[1].slice(0, -1) : $("#to option:selected").text().match(/\(([^)]+)\)/)[1]}`;
+                         document.getElementById("selects").style.display = "block";
 
-                              localStorage.setItem("from", document.getElementById("from").value);
-                              localStorage.setItem("to", document.getElementById("to").value);
-                              localStorage.setItem("amount", document.getElementById("amount").value);
-                              localStorage.setItem("amount-text", `${document.getElementById("amount").value} ${Number(document.getElementById("amount").value) == 1 ? $("#from option:selected").text().match(/\(([^)]+)\)/)[1].slice(0, -1) : $("#from option:selected").text().match(/\(([^)]+)\)/)[1]} = ${data.total.toFixed(2)} ${data.total == 1 ? $("#to option:selected").text().match(/\(([^)]+)\)/)[1].slice(0, -1) : $("#to option:selected").text().match(/\(([^)]+)\)/)[1]}`);
-                              $("#totalHead").show();
+                         localStorage.setItem("from", document.getElementById("from").value);
+                         localStorage.setItem("to", document.getElementById("to").value);
+                         localStorage.setItem("amount", document.getElementById("amount").value);
+                         localStorage.setItem("amount-text", `${document.getElementById("amount").value} ${Number(document.getElementById("amount").value) == 1 ? $("#from option:selected").text().match(/\(([^)]+)\)/)[1].slice(0, -1) : $("#from option:selected").text().match(/\(([^)]+)\)/)[1]} = ${data.total.toFixed(2)} ${data.total == 1 ? $("#to option:selected").text().match(/\(([^)]+)\)/)[1].slice(0, -1) : $("#to option:selected").text().match(/\(([^)]+)\)/)[1]}`);
+                         $("#totalHead").show();
 
-                         } catch (error) {
 
-                              alert("Please Enter A Valid Number!");
-
-                         }
                     })
-                    .catch((error) => {
 
-                         alert("Please Enter A Valid Number!");
-
-                    });
           }
      </script>
 
