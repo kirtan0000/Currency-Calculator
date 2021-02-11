@@ -58,7 +58,6 @@
                left: -50px;
                width: 130px;
                height: 40px;
-               border-radius: 40%;
                background-color: red;
                border: 0px solid black;
 
@@ -78,11 +77,12 @@
      <h2 style="margin-left: -180px; margin-top: 10px;"> Convert From: </h2>
      <select id="from">
 
-          <option value="USD">USD (Dollars)</option>
-          <option value="EUR">EUR (Euros)</option>
-          <option value="GBP">GBP (Pounds)</option>
-          <option value="MXN">MXN (Pesos)</option>
+          <option value="USD">USD (American Dollars)</option>
+          <option value="EUR">EUR (European Euros)</option>
+          <option value="GBP">GBP (British Pounds)</option>
+          <option value="MXN">MXN (Mexican Pesos)</option>
           <option value="CAD">CAD (Canadian Dollars)</option>
+          <option value="INR">INR (Indian Rupees)</option>
 
      </select>
 
@@ -90,11 +90,12 @@
      <h2 style="margin-left: -190px; margin-top: 10px;"> Convert To: </h2>
      <select id="to">
 
-          <option value="USD">USD (Dollars)</option>
-          <option value="EUR">EUR (Euros)</option>
-          <option value="GBP">GBP (Pounds)</option>
-          <option value="MXN">MXN (Pesos)</option>
+          <option value="USD">USD (American Dollars)</option>
+          <option value="EUR">EUR (European Euros)</option>
+          <option value="GBP">GBP (British Pounds)</option>
+          <option value="MXN">MXN (Mexican Pesos)</option>
           <option value="CAD">CAD (Canadian Dollars)</option>
+          <option value="INR">INR (Indian Rupees)</option>
 
      </select>
 
@@ -109,7 +110,7 @@
      <script>
 
 
-          alphabetSel = (id) => {
+          alphabetSel = id => {
 
                var options = $(`#${id} option`).toArray();
                options.sort(function (a, b) {
@@ -130,6 +131,17 @@
           alphabetSel("to");
           document.getElementById("to").value = "EUR"
 
+          const commafy = num => {
+               var str = num.toString().split('.');
+               if (str[0].length >= 5) {
+                    str[0] = str[0].replace(/(\d)(?=(\d{3})+$)/g, '$1,');
+               }
+               if (str[1] && str[1].length >= 5) {
+                    str[1] = str[1].replace(/(\d{3})/g, '$1 ');
+               }
+               return str.join('.');
+          }
+
           if (localStorage.getItem("from") && localStorage.getItem("to") && localStorage.getItem("amount") && localStorage.getItem("amount-text")) {
 
                document.getElementById("from").value = localStorage.getItem("from");
@@ -140,21 +152,21 @@
 
 
           } else $("#totalHead").hide();
-
+          
 
 
           document.getElementById("convert-btn").onclick = () => {
-               fetch(`./api/convert?to=${document.getElementById('from').value}&from=${document.getElementById('to').value}&amount=${document.getElementById('amount').value}`)
+               fetch(`./api/convert?to=${document.getElementById('to').value}&from=${document.getElementById('from').value}&amount=${document.getElementById('amount').value}`)
                     .then(response => response.json())
                     .then(data => {
 
-                         document.getElementById("totalHead").innerText = `${document.getElementById("amount").value} ${Number(document.getElementById("amount").value) == 1 ? $("#from option:selected").text().match(/\(([^)]+)\)/)[1].slice(0, -1) : $("#from option:selected").text().match(/\(([^)]+)\)/)[1]} = ${data.total.toFixed(2)} ${data.total == 1 ? $("#to option:selected").text().match(/\(([^)]+)\)/)[1].slice(0, -1) : $("#to option:selected").text().match(/\(([^)]+)\)/)[1]}`;
+                         document.getElementById("totalHead").innerText = `${commafy(document.getElementById("amount").value)} ${Number(document.getElementById("amount").value) == 1 ? $("#from option:selected").text().match(/\(([^)]+)\)/)[1].slice(0, -1) : $("#from option:selected").text().match(/\(([^)]+)\)/)[1]} = ${commafy(data.total.toFixed(2))} ${data.total == 1 ? $("#to option:selected").text().match(/\(([^)]+)\)/)[1].slice(0, -1) : $("#to option:selected").text().match(/\(([^)]+)\)/)[1]}`;
                          document.getElementById("selects").style.display = "block";
 
                          localStorage.setItem("from", document.getElementById("from").value);
                          localStorage.setItem("to", document.getElementById("to").value);
                          localStorage.setItem("amount", document.getElementById("amount").value);
-                         localStorage.setItem("amount-text", `${document.getElementById("amount").value} ${Number(document.getElementById("amount").value) == 1 ? $("#from option:selected").text().match(/\(([^)]+)\)/)[1].slice(0, -1) : $("#from option:selected").text().match(/\(([^)]+)\)/)[1]} = ${data.total.toFixed(2)} ${data.total == 1 ? $("#to option:selected").text().match(/\(([^)]+)\)/)[1].slice(0, -1) : $("#to option:selected").text().match(/\(([^)]+)\)/)[1]}`);
+                         localStorage.setItem("amount-text", `${commafy(document.getElementById("amount").value)} ${Number(document.getElementById("amount").value) == 1 ? $("#from option:selected").text().match(/\(([^)]+)\)/)[1].slice(0, -1) : $("#from option:selected").text().match(/\(([^)]+)\)/)[1]} = ${commafy(data.total.toFixed(2))} ${data.total == 1 ? $("#to option:selected").text().match(/\(([^)]+)\)/)[1].slice(0, -1) : $("#to option:selected").text().match(/\(([^)]+)\)/)[1]}`);
                          $("#totalHead").show();
 
 
